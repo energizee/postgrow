@@ -1,0 +1,24 @@
+/* Design tokens */
+
+:root {
+  /* Colours */
+  --colour-bg: #f6f8f3;
+  --colour-surface: #ffffff;
+  --colour-text: #1f2a1f;
+  --colour-text-muted: #5c6b5c;
+  --colour-border: #dfe6da;
+  --colour-primary: #2e8b4a;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  /* Shape */
+  --radius: 10px;
+
+  /* Type */
+  --font: system-ui, 'Segoe UI', Roboto, sans-serif;
+}

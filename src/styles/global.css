@@ -1,0 +1,17 @@
+/* Base styles shared across the app */
+
+@import './variables.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--colour-text);
+  background: var(--colour-bg);
+  line-height: 1.5;
+}
