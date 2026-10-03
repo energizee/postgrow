@@ -1,0 +1,46 @@
+.onboarding {
+  max-width: 420px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: var(--space-7) var(--edge) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.onboarding--step {
+  padding-top: var(--space-5);
+}
+
+.onboarding__hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.onboarding__hero h1 {
+  font-size: var(--text-2xl);
+}
+
+.onboarding__postcode {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.onboarding__sector {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: var(--weight-medium);
+}
+
+.onboarding__demo {
+  align-self: center;
+  min-height: var(--tap);
+  border: none;
+  background: none;
+  color: var(--colour-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}

@@ -1,4 +1,97 @@
 .map {
-    height: 100%;
-    width: 100%;
-  }
+  width: 100%;
+  height: 100%;
+  background: var(--mist);
+  font-family: var(--font);
+}
+
+/* Mute the basemap so sectors carry the colour */
+.map .leaflet-tile-pane {
+  filter: grayscale(0.9) sepia(0.25) hue-rotate(45deg) brightness(1.06) contrast(0.85);
+}
+
+.map .leaflet-top {
+  top: calc(var(--bar-height) + env(safe-area-inset-top) + var(--space-2));
+}
+
+.map .leaflet-control-zoom {
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-float);
+  overflow: hidden;
+}
+
+.map .leaflet-control-zoom a {
+  width: var(--tap);
+  height: var(--tap);
+  line-height: var(--tap);
+  color: var(--bark);
+}
+
+.map .leaflet-control-attribution {
+  background: color-mix(in srgb, var(--mist) 80%, transparent);
+  color: var(--loam);
+}
+
+/* Sectors: bare soil to full canopy */
+
+.sector {
+  stroke-width: 1.5;
+  fill-opacity: 0.42;
+  cursor: pointer;
+}
+
+.sector:hover {
+  fill-opacity: 0.6;
+}
+
+.sector--low {
+  fill: var(--score-low);
+  stroke: var(--score-low);
+}
+
+.sector--mid {
+  fill: var(--score-mid);
+  stroke: var(--score-mid);
+}
+
+.sector--high {
+  fill: var(--score-high);
+  stroke: var(--score-high);
+}
+
+.sector--own {
+  stroke: var(--bark);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+}
+
+.sector--selected {
+  stroke: var(--bark);
+  stroke-width: 3.5;
+  stroke-dasharray: none;
+  fill-opacity: 0.62;
+}
+
+.sector-label.leaflet-tooltip {
+  padding: 0 var(--space-2);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--white) 85%, transparent);
+  box-shadow: none;
+  color: var(--bark);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  pointer-events: none;
+}
+
+.sector-label.leaflet-tooltip::before {
+  display: none;
+}
+
+.search-pin {
+  fill: var(--bark);
+  fill-opacity: 1;
+  stroke: var(--white);
+  stroke-width: 3;
+}

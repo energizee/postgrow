@@ -1,5 +1,107 @@
 .map-page {
-  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: var(--layer-map);
 }
 
+.map-search {
+  position: absolute;
+  top: calc(var(--bar-height) + env(safe-area-inset-top) + var(--space-3));
+  left: var(--edge);
+  z-index: var(--layer-overlay);
+  width: min(360px, calc(100% - var(--edge) * 2 - var(--tap) - var(--space-3)));
+}
 
+.map-search__icon {
+  position: absolute;
+  top: calc(var(--tap) / 2);
+  left: var(--space-4);
+  transform: translateY(-50%);
+  color: var(--loam);
+  pointer-events: none;
+}
+
+.map-search__input {
+  width: 100%;
+  height: var(--tap);
+  padding: 0 var(--space-6) 0 calc(var(--space-4) + var(--space-5));
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius-pill);
+  background: var(--colour-surface);
+  box-shadow: var(--shadow-float);
+}
+
+.map-search__input:focus-visible {
+  outline: none;
+  border-color: var(--colour-focus);
+  box-shadow: var(--shadow-float);
+}
+
+.map-search__spinner {
+  position: absolute;
+  top: calc(var(--tap) / 2 - 8px);
+  right: var(--space-4);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--twig);
+  border-top-color: var(--fern);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.map-search__error {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--colour-surface);
+  box-shadow: var(--shadow-float);
+  color: var(--colour-danger);
+  font-size: var(--text-sm);
+}
+
+.map-legend {
+  position: absolute;
+  left: var(--edge);
+  bottom: calc(var(--dock-height) + var(--space-6) + env(safe-area-inset-bottom));
+  z-index: var(--layer-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--white) 88%, transparent);
+  box-shadow: var(--shadow-float);
+  list-style: none;
+  font-size: var(--text-xs);
+}
+
+.map-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.map-legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+}
+
+.map-legend__swatch.sector--low {
+  background: var(--score-low);
+}
+
+.map-legend__swatch.sector--mid {
+  background: var(--score-mid);
+}
+
+.map-legend__swatch.sector--high {
+  background: var(--score-high);
+}

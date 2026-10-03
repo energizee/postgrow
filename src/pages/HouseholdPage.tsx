@@ -1,80 +1,136 @@
-import { useState, useEffect } from 'react';
+import { useState, type FormEvent } from "react";
+import { Flame, Pencil, UserMinus } from "lucide-react";
+import { Avatar } from "../components/Avatar/Avatar";
+import { ContributionList } from "../components/ContributionList/ContributionList";
+import { PageHeader } from "../components/PageHeader/PageHeader";
+import { householdLifetimePoints, householdRecentPoints, rankHouseholds, streaks, userRecentPoints } from "../lib/scoring";
+import { removeMember, renameHousehold } from "../store/actions";
+import { useMember, useStore } from "../store/context";
+import "./HouseholdPage.css";
+
+const ICON_SIZE = 18;
+const HISTORY_LIMIT = 20;
 
 export function HouseholdPage() {
-  const [username, setUsername] = useState('');
-  const [postcode, setPostcode] = useState('');
-  const [isSaved, setIsSaved] = useState(false);
+  const { state, run } = useStore();
+  const { user, household, area } = useMember();
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(household.name);
+  const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
-  //Check if a user already exists in local storage when the page loads
-  useEffect(() => {
-    const savedProfile = localStorage.getItem('ecoProfile');
-    if (savedProfile) {
-      const parsedProfile = JSON.parse(savedProfile);
-      setUsername(parsedProfile.username);
-      setPostcode(parsedProfile.postcode);
+  const isOwner = household.owner === user.id;
+  const members = state.users.filter((u) => u.householdId === household.id);
+  const ranking = rankHouseholds(state, area.id);
+  const rank = ranking.findIndex((r) => r.household.id === household.id) + 1;
+  const history = state.contributions.filter((c) => c.householdId === household.id);
+
+  function attempt(change: Parameters<typeof run>[0]) {
+    try {
+      run(change);
+      setError("");
+      return true;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong");
+      return false;
     }
-  }, []);
+  }
 
-  //Handle form submission
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault(); //Prevents the page from refreshing
-
-    const formattedPostcode = postcode.trim().slice(0, -2);
-
-    const profileData = {
-      username: username,
-      postcode: formattedPostcode.toUpperCase(), //Standardize postcodes
-      score: 0 // Initialize their eco-score at 0 for later
-    };
-
-    //Save to the browser's local storage as a string
-    localStorage.setItem('ecoProfile', JSON.stringify(profileData));
-    
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000); //Hide success message after 3 seconds
-  };
+  function saveName(event: FormEvent) {
+    event.preventDefault();
+    if (attempt((s) => renameHousehold(s, user.id, name))) setEditing(false);
+  }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '2rem' }}>
-      <h2>Join the Eco Competition</h2>
-      <p>Enter your details to start earning points for your postcode</p>
-
-      <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Username</label>
-          <input 
-            type="text" 
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Enter your Postcode (e.g., ML3 7NF)</label>
-          <input 
-            type="text" 
-            value={postcode}
-            onChange={(e) => setPostcode(e.target.value)}
-            required
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-
-        <button 
-          type="submit" 
-          style={{ padding: '0.75rem', background: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer' }}
-        >
-          Save Profile
-        </button>
-      </form>
-
-      {isSaved && (
-        <div style={{ marginTop: '1rem', padding: '1rem', background: '#e8f5e9', color: '#2e7d32' }}>
-         Profile saved successfully! Ready to earn points.
-        </div>
+    <div className="page">
+      {editing ? (
+        <form className="household-rename" onSubmit={saveName}>
+          <label htmlFor="household-name" className="visually-hidden">
+            Household name
+          </label>
+          <input id="household-name" className="field__input" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <button type="submit" className="btn btn--primary">
+            Save
+          </button>
+          <button type="button" className="btn btn--secondary" onClick={() => setEditing(false)}>
+            Cancel
+          </button>
+        </form>
+      ) : (
+        <PageHeader
+          title={household.name}
+          subtitle={area.id}
+          actions={
+            isOwner && (
+              <button type="button" className="icon-btn" onClick={() => setEditing(true)} aria-label="Rename household">
+                <Pencil size={ICON_SIZE} />
+              </button>
+            )
+          }
+        />
       )}
+
+      <dl className="stats">
+        <div className="stat">
+          <dt>Points, 30 days</dt>
+          <dd>{householdRecentPoints(state, household.id)}</dd>
+        </div>
+        <div className="stat">
+          <dt>Lifetime</dt>
+          <dd>{householdLifetimePoints(state, household.id)}</dd>
+        </div>
+        <div className="stat">
+          <dt>Rank in {area.id}</dt>
+          <dd>
+            {rank}
+            <span className="stat__of"> of {ranking.length}</span>
+          </dd>
+        </div>
+      </dl>
+
+      <section className="section" aria-labelledby="members-heading">
+        <h2 id="members-heading">Members</h2>
+        <ul className="list">
+          {members.map((m) => (
+            <li key={m.id} className="row">
+              <Avatar name={m.name} />
+              <span className="row__main">
+                <span className="row__title">
+                  {m.name}
+                  {m.id === household.owner && <span className="muted"> (owner)</span>}
+                </span>
+                <span className="row__meta member__streak">
+                  <Flame size={ICON_SIZE - 4} aria-hidden="true" />
+                  {streaks(state, m.id).current} day streak
+                </span>
+              </span>
+              <span className="row__value">{userRecentPoints(state, m.id)}</span>
+              {isOwner &&
+                m.id !== user.id &&
+                (confirmRemove === m.id ? (
+                  <button type="button" className="btn btn--danger" onClick={() => attempt((s) => removeMember(s, user.id, m.id))}>
+                    Remove
+                  </button>
+                ) : (
+                  <button type="button" className="icon-btn" onClick={() => setConfirmRemove(m.id)} aria-label={`Remove ${m.name}`}>
+                    <UserMinus size={ICON_SIZE} />
+                  </button>
+                ))}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {error && (
+        <p className="field__error" role="alert">
+          {error}
+        </p>
+      )}
+
+      <section className="section" aria-labelledby="history-heading">
+        <h2 id="history-heading">History</h2>
+        {history.length ? <ContributionList contributions={history} limit={HISTORY_LIMIT} showMember /> : <p className="muted">Nothing logged yet</p>}
+      </section>
     </div>
   );
 }

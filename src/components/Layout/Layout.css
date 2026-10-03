@@ -1,65 +1,139 @@
-/* src/components/Layout/Layout.css */
+.shell {
+  min-height: 100dvh;
+}
 
-:root {
-    --primary-green: #2e7d32; 
-    --background: #f9fbf9;
-    --text-dark: #2c3e50;
+.shell main:focus {
+  outline: none;
+}
+
+.shell__skip {
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: calc(var(--layer-chrome) + 1);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--colour-primary);
+  color: var(--white);
+  transform: translateY(-200%);
+}
+
+.shell__skip:focus {
+  transform: none;
+}
+
+.shell__alert {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--dock-height) + var(--space-4));
+  z-index: var(--layer-chrome);
+  transform: translateX(-50%);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--rust-tint);
+  color: var(--colour-danger);
+}
+
+/* Top bar floats over the map and content */
+
+.top-bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--layer-chrome);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--bar-height);
+  padding: 0 var(--space-2) 0 var(--edge);
+  padding-top: env(safe-area-inset-top);
+  background: var(--colour-surface);
+  border-bottom: 1px solid var(--colour-border);
+}
+
+.top-bar__home {
+  text-decoration: none;
+}
+
+.top-bar__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.top-bar__sector {
+  font-weight: var(--weight-medium);
+}
+
+.top-bar__streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 var(--space-2);
+  color: var(--loam);
+  font-weight: var(--weight-bold);
+}
+
+.top-bar__badge {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  min-width: 18px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--colour-danger);
+  color: var(--white);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  text-align: center;
+}
+
+@media (max-width: 420px) {
+  .logo__word {
+    display: none;
   }
-  
-  /* Base app container */
-  .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--background);
-    font-family: system-ui, -apple-system, sans-serif;
-  }
-  
-  /* Navigation Bar */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-  
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--primary-green);
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-  
-  .brand-icon {
-    font-size: 1.5rem;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #666;
-    font-weight: 600;
-    transition: color 0.2s ease;
-  }
-  
-  .nav-link:hover {
-    color: var(--primary-green);
-  }
-  
-  /* Main Content Area */
-  .main-content {
-    flex: 1;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto; 
-    width: 100%;
-    box-sizing: border-box;
-  }
+}
+
+/* Bottom navigation with the add button in the middle */
+
+.dock {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: var(--layer-chrome);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: calc(var(--dock-height) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--colour-surface);
+  border-top: 1px solid var(--colour-border);
+}
+
+.dock__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: var(--tap);
+  height: 100%;
+  padding: 0 var(--space-2);
+  color: var(--colour-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.dock__link[aria-current="page"] {
+  color: var(--colour-primary);
+}
+
+.dock__add {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: var(--radius-pill);
+  background: var(--colour-primary);
+  color: var(--white);
+}

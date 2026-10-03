@@ -1,0 +1,12 @@
+.sector-score {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.sector-score__percent {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  line-height: 0.9;
+  color: var(--canopy);
+}

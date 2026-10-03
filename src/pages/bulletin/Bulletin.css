@@ -1,0 +1,86 @@
+.date-tile {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  background: var(--twig);
+  line-height: 1;
+}
+
+.date-tile__day {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+.date-tile__month {
+  font-size: var(--text-xs);
+  color: var(--colour-text-muted);
+}
+
+.participants {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--colour-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.participants--joined {
+  color: var(--colour-primary);
+  font-weight: var(--weight-bold);
+}
+
+.activity-facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity-facts li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.activity-description {
+  max-width: 60ch;
+}
+
+.activity-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.activity-actions:empty {
+  display: none;
+}
+
+.avatars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity-total {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--colour-primary);
+}
+
+.activity-proof {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}

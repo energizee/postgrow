@@ -1,0 +1,11 @@
+.proof-image {
+  display: block;
+  object-fit: cover;
+  background: var(--twig);
+}
+
+.proof-image--empty {
+  display: grid;
+  place-items: center;
+  color: var(--loam);
+}

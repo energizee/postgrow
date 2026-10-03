@@ -1,0 +1,30 @@
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.stat--streak dd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--loam);
+}
+
+.setting {
+  width: 100%;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.demo {
+  align-items: flex-start;
+}
+
+.demo .field {
+  align-self: stretch;
+}

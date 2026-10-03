@@ -1,0 +1,11 @@
+.leaderboard li:first-child .rank {
+  color: var(--colour-primary);
+}
+
+.leaderboard__points {
+  font-size: var(--text-lg);
+}
+
+.leaderboard .row--mine {
+  background: var(--colour-highlight);
+}

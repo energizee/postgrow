@@ -1,0 +1,11 @@
+.action-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-6);
+  color: var(--colour-primary);
+}
+
+.action-icon--lasting {
+  color: var(--loam);
+}

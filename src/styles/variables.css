@@ -1,24 +1,85 @@
 /* Design tokens */
 
 :root {
-  /* Colours */
-  --colour-bg: #f6f8f3;
-  --colour-surface: #ffffff;
-  --colour-text: #1f2a1f;
-  --colour-text-muted: #5c6b5c;
-  --colour-border: #dfe6da;
-  --colour-primary: #2e8b4a;
+  
+  --canopy: #1f4d2e;
+  --fern: #3f7d4e;
+  --moss: #8fa752;
+  --sprout: #dcebd2;
+  --mist: #f5f8f3;
+  --white: #ffffff;
+  --bark: #3b2a1f;
+  --loam: #7a5b45;
+  --soil: #b08965;
+  --twig: #e6ded3;
+  --heartwood: #f3ead9;
+  --rust: #a3412c;
+  --rust-tint: #f6e4df;
 
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 40px;
+  /* Roles */
+  --colour-bg: var(--mist);
+  --colour-surface: var(--white);
+  --colour-text: var(--bark);
+  --colour-text-muted: var(--loam);
+  --colour-border: var(--twig);
+  --colour-primary: var(--canopy);
+  --colour-primary-hover: #163a22;
+  --colour-accent: var(--fern);
+  --colour-highlight: var(--sprout);
+  --colour-danger: var(--rust);
+  --colour-focus: var(--fern);
 
-  /* Shape */
-  --radius: 10px;
+  
+  --score-low: var(--soil);
+  --score-mid: var(--moss);
+  --score-high: var(--fern);
 
   /* Type */
-  --font: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font: "Bricolage Grotesque", system-ui, sans-serif;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5625rem;
+  --text-2xl: 2.4375rem;
+  --text-3xl: 3.8125rem;
+  --weight-regular: 400;
+  --weight-medium: 520;
+  --weight-bold: 680;
+  --leading-tight: 1.1;
+  --leading-body: 1.5;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  
+  --shadow-float: 0 1px 3px rgb(59 42 31 / 0.12);
+
+  /* Layout */
+  --tap: 44px;
+  --bar-height: 56px;
+  --dock-height: 64px;
+  --edge: var(--space-4);
+  --content-width: 640px;
+  --panel-width: 360px;
+
+  /* Layers */
+  --layer-map: 0;
+  --layer-overlay: 500;
+  --layer-chrome: 1000;
+
 }

@@ -1,0 +1,21 @@
+.avatar {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--bark);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+}
+
+.avatar--sprout {
+  background: var(--sprout);
+}
+
+.avatar--heartwood {
+  background: var(--heartwood);
+}
+
+.avatar--twig {
+  background: var(--twig);
+}

@@ -14,8 +14,12 @@
 //   Momentum %          = all contribution + review points from the last 30 days, per household,
 //                         each faded linearly from 100% on the day logged to 0% at day 30,
 //                         / CONTRIBUTION_POTENTIAL x 100
-//   Green score %       = floor % + min(momentum %, 100 - floor %)   -> map colour, tree leaves
-//   Tree size           = lifetime contribution points (never shrinks)
+//   Green score %       = floor % + min(momentum %, 100 - floor %)   -> map colour
+//   Tree                = size from floor %, leaves from momentum %
+//
+// A household is active with at least one contribution in the last 30 days.
+// Group activity proof is uploaded once by the organiser; approval applies the
+// lasting or habit multiplier to every contribution linked to the activity.
 //
 // Proof reviews are anonymous both ways. Each request goes to a random other
 // postcode area, the first person there to review it decides, and neither side
@@ -29,13 +33,17 @@ export const LASTING_PROOF_MULTIPLIER = 2;
 export const REVIEW_POINTS = 2;
 export const CONTRIBUTION_POTENTIAL = 700; // points per household for 100% (a very engaged household over 30 days)
 export const EARNED_CAP_PERCENT = 20; // max permanent boost from lasting contributions
+export const REVIEW_REASSIGN_HOURS = 48; // unreviewed proof moves to another sector after this
 
 // Individuals 
+
+export type LatLng = { lat: number; lng: number };
 
 export type User = {
   id: string;
   name: string;
   postcode: string | null;
+  location: LatLng | null; // from the postcode, never shown
   postcodeAreaId: string | null; // sector, set once the postcode is validated
   householdId: string | null; // null until they join or create a household
   createdAt: string; // ISO date
@@ -49,6 +57,7 @@ export type Household = {
   name: string;
   postcodeAreaId: string;
   owner: string; // User id
+  location: LatLng; // owner's postcode, used to draw the sector shape, never shown
   createdAt: string;
 };
 
@@ -57,7 +66,7 @@ export type Household = {
 export type PostcodeArea = {
   id: string; // postcode sector, e.g. "SE15 4"
   outcode: string; // "SE15"
-  center: { lat: number; lng: number };
+  center: LatLng;
   geography: {
     // From postcodes.io, used to join public datasets to this area
     lsoaCodes: string[];
@@ -128,14 +137,16 @@ export type ContributionAction = {
   category: ProfileCategory;
   basePoints: number;
   impact: ContributionImpact;
+  dailyCap?: number; // habits only; lasting actions are once per household
 };
 
 export type ProofStatus = "none" | "pending" | "approved" | "rejected";
 
 export type Proof = {
-  image: string; // data URL (resized) for the localStorage demo
+  image: string; // resized data URL; empty for seeded demo proofs
   status: Exclude<ProofStatus, "none">;
   assignedAreaId: string; // random other area that will review it
+  assignedAt: string; // reassigned after REVIEW_REASSIGN_HOURS without a review
   reviewId: string | null; // set once someone in that area reviews it
   submittedAt: string;
 };
@@ -147,15 +158,35 @@ export type Contribution = {
   householdId: string;
   postcodeAreaId: string;
   basePoints: number; // copied from the action at log time, added instantly
-  proof: Proof | null; // optional for habits, required for lasting actions
+  details: string;
+  proof: Proof | null; // optional for habits, required for lasting actions (unless linked to an activity)
+  activityId: string | null; // group activity this was part of
+  createdAt: string;
+};
+
+// Group activities (bulletin board)
+
+export type GroupActivity = {
+  id: string;
+  postcodeAreaId: string;
+  organiserId: string; // User id
+  title: string;
+  actionId: string;
+  date: string; // ISO date and time
+  place: string;
+  description: string;
+  participantIds: string[]; // User ids
+  proof: Proof | null; // uploaded by the organiser, applies to every linked contribution
   createdAt: string;
 };
 
 // Reviews
 
+export type ReviewSubject = { kind: "contribution" | "activity"; id: string };
+
 export type Review = {
   id: string;
-  contributionId: string;
+  subject: ReviewSubject;
   reviewerUserId: string;
   reviewerHouseholdId: string;
   reviewerAreaId: string;
@@ -171,6 +202,7 @@ export type AppState = {
   households: Household[];
   areas: PostcodeArea[];
   contributions: Contribution[];
+  activities: GroupActivity[];
   reviews: Review[];
   currentUserId: string | null;
 };

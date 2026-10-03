@@ -1,0 +1,36 @@
+.segmented {
+  display: flex;
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--twig);
+}
+
+.segmented__option {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: calc(var(--tap) - var(--space-2));
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--colour-text-muted);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.segmented__option[aria-pressed="true"] {
+  background: var(--colour-surface);
+  color: var(--colour-text);
+}
+
+.segmented__count {
+  min-width: 20px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--colour-primary);
+  color: var(--white);
+  font-size: var(--text-xs);
+  line-height: 20px;
+}

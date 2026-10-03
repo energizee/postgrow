@@ -3,13 +3,6 @@ AdaHack project for the postcode lottery challenge.
 
 Neighbours register their household to a postcode area, log sustainable actions, and grow their area's tree. Areas show up on a map coloured by green score and compete on leaderboards.
 
-## Stack
-
-- Vite + React + TypeScript
-- Vanilla CSS: one `.css` file next to each component, with shared tokens in `src/styles/variables.css`
-- Leaflet (`react-leaflet`) for the map
-- [postcodes.io](https://postcodes.io) for postcode lookups
-
 ## Project structure
 
 ```

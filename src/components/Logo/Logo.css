@@ -1,0 +1,15 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo__mark {
+  color: var(--fern);
+}
+
+.logo__word {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--canopy);
+}
